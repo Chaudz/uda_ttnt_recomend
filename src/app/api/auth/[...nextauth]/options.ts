@@ -1,123 +1,62 @@
-import { jwtDecode } from 'jwt-decode';
-import { AuthOptions } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
+import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import axios from 'axios';
 
-export const parseTokenToUser = (token: string) => {
-  const decodedToken = jwtDecode<{
-    'https://hasura.io/jwt/claims': {
-      'x-hasura-user-id': string;
-      'x-hasura-user-email': string;
-      'x-hasura-default-role': string;
-    };
-  }>(token);
-
-  const claims = decodedToken['https://hasura.io/jwt/claims'];
-
-  return {
-    id: Number(claims['x-hasura-user-id']),
-    email: claims['x-hasura-user-email'],
-    role: claims['x-hasura-default-role'],
-  };
-};
-
-export function getJwtExpiry(token: string) {
-  const decoded = jwtDecode(token);
-
-  return decoded.exp;
-}
-
-async function refreshToken(token: JWT): Promise<JWT> {
-  console.log('**** Refreshing... ****', token?.sub);
-  const refreshToken = token.backendTokens.refreshToken;
-
-  //  Call api to refresh token
-  const refreshTokenRes = '';
-  const tokenRes = '';
-
-  if (!refreshTokenRes) return token;
-  console.log('**** Refreshed ****');
-
-  const accessToken = tokenRes;
-
-  return {
-    ...token,
-    backendTokens: {
-      refreshToken: token.backendTokens.refreshToken,
-      accessToken,
-      expiresIn: getJwtExpiry(accessToken)! * 1000,
-    },
-  };
-}
-
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      id: 'credentials-google-token',
-      type: 'credentials',
-      name: 'credentials-google-token',
+      name: 'Credentials',
       credentials: {
-        token: { label: 'token', type: 'text' },
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.token) return null;
-
-        // Call api get user info
-        const accessToken = '';
-        const refreshToken = '';
-
-        if (!accessToken) {
+        if (!credentials?.username || !credentials?.password) {
           return null;
         }
 
-        const decoded = parseTokenToUser(accessToken);
+        try {
+          const res = await axios.post('http://127.0.0.1:5000/api/login', {
+            username: credentials.username,
+            password: credentials.password,
+          });
 
-        return {
-          id: decoded.id.toString(),
-          user: {
-            id: decoded.id,
-            email: decoded.email,
-            role: decoded.role,
-          },
-          backendTokens: {
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            expiresIn: getJwtExpiry(accessToken)! * 1000,
-          },
-        };
+          if (res.status === 200 && res.data) {
+            console.log('Login success:', res.data, credentials.username);
+
+            return {
+              id: res.data.user_id,
+              username: credentials.username,
+              accessToken: res.data.token,
+            };
+          }
+        } catch (error) {
+          console.error('Login error:', error);
+        }
+
+        return null;
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
-      console.log('[callbacks][jwt]', { exp: token?.backendTokens?.expiresIn });
-
-      if (user) return { ...token, ...user };
-
-      const now = Date.now();
-      if (token.backendTokens?.expiresIn > now) {
-        return token;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.username = user.username;
+        token.accessToken = user.accessToken;
       }
-
-      return await refreshToken(token);
+      return token;
     },
-
-    async session({ token, session }) {
-      console.log('[callbacks][session]', { exp: session.expires });
-
-      if (token.newUser) {
-        session.user = undefined;
-        session.newUser = token.newUser as string;
-
-        return session;
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.username = token.username as string;
       }
-      session.user = token.user;
-      session.backendTokens = token.backendTokens;
-
+      session.accessToken = token.accessToken as string;
       return session;
     },
   },
   pages: {
-    signIn: '/',
+    signIn: '/login',
   },
 };
