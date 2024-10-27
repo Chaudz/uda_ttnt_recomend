@@ -1,39 +1,43 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
+import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     try {
-      const result = await signIn('credentials', {
+      const response = await axios.post('http://127.0.0.1:5000/api/register', {
         username,
         password,
-        redirect: false,
       });
 
-      if (result?.error) {
-        setError('Invalid username or password');
-      } else {
-        toast.success('Login success');
+      if (response.status === 201) {
+        setSuccess('User registered successfully! Redirecting to login...');
+        toast.success('Register success');
         setTimeout(() => {
-          router.push('/');
-        }, 1300);
+          router.push('/login');
+        }, 1000);
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      toast.error('Again!');
-      setError('An unexpected error occurred');
+    } catch (err) {
+      console.error('Register error:', err);
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data.error || 'An unexpected error occurred');
+      } else {
+        toast.error('Again!');
+        setError('An unexpected error occurred');
+      }
     }
   };
 
@@ -50,9 +54,10 @@ export const LoginForm = () => {
         className="bg-white p-6 rounded shadow-md space-y-4 max-w-md w-full  animate-upToDown-slow"
       >
         <h2 className="text-2xl font-bold mb-4 text-center text-orange-500">
-          Login
+          Register
         </h2>
         {error && <p className="text-red-500">{error}</p>}
+        {success && <p className="text-green-500">{success}</p>}
 
         <div>
           <label htmlFor="username" className="block mb-1">
@@ -88,21 +93,19 @@ export const LoginForm = () => {
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="bg-orange-400 text-white py-2 rounded hover:bg-orange-300 w-full"
-        >
-          Log In
-        </button>
-
-        <div className="flex">
-          <p className="mb-2 text-center">{`Don't have an account?`}</p>
-
-          <a
-            href="/register"
-            className="ml-1 text-blue-600 hover:text-blue-400"
+        <div>
+          <button
+            type="submit"
+            className="bg-orange-400 text-white py-2 rounded hover:bg-orange-300 w-full"
           >
             Register
+          </button>
+        </div>
+
+        <div className="flex">
+          <p className="mb-2 text-center">Do you already have an account?</p>
+          <a href="/login" className="ml-1 text-blue-600 hover:text-blue-400">
+            Login
           </a>
         </div>
       </form>

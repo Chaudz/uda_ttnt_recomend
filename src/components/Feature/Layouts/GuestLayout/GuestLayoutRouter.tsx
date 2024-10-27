@@ -5,10 +5,5 @@ interface Props {
 }
 
 export const GuestLayoutRouter: React.FC<Props> = ({ children }) => {
-  return (
-    <div>
-      This is the guest layout router
-      <div>{children}</div>
-    </div>
-  );
+  return <div>{children}</div>;
 };
