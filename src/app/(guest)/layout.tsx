@@ -1,19 +1,23 @@
 'use client';
 
-import { GuestLayoutRouter } from '@/components';
+import MainLayout from '@/components/Feature/Layouts/ MainLayout';
 import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 export default function GuestLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = useSession();
-  console.log('===', session.data);
+  const { data: session, status } = useSession();
 
-  // if (status === 'loading') {
-  //   return <div>Loading</div>;
-  // }
+  if (status === 'loading') {
+    return <div>Đang tải...</div>;
+  }
 
-  return <GuestLayoutRouter>{children}</GuestLayoutRouter>;
+  if (status === 'authenticated') {
+    return redirect('/home');
+  }
+
+  return <MainLayout>{children}</MainLayout>;
 }

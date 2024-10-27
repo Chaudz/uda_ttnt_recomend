@@ -1,23 +1,9 @@
 'use client';
-import toast from 'react-hot-toast';
-import { useSession, signOut } from 'next-auth/react';
+
+import HomeView from '@/views/guest/Home/HomeView';
 
 const Home = () => {
-  return (
-    <div>
-      
-      <button
-        type="button"
-        onClick={() => {
-          signOut();
-        }}
-      >
-        fdsafs
-      </button>
-
-
-    </div>
-  );
+  return <HomeView />;
 };
 
 export default Home;

@@ -27,7 +27,7 @@ export const LoginForm = () => {
       } else {
         toast.success('Login success');
         setTimeout(() => {
-          router.push('/');
+          router.push('/home');
         }, 1300);
       }
     } catch (error) {

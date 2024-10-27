@@ -22,7 +22,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={satoshiFont.className}>
       <body>
-        <NextTopLoader />
         <CustomToaster />
         <SessionProviders>{children}</SessionProviders>
       </body>

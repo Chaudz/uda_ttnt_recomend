@@ -1,9 +1,9 @@
-import { GuestLayoutRouter, MainLayoutRouter } from '@/components';
+import MainLayout from '@/components/Feature/Layouts/ MainLayout';
 
 export default function GuestLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <GuestLayoutRouter>{children}</GuestLayoutRouter>;
+  return <MainLayout>{children}</MainLayout>;
 }
