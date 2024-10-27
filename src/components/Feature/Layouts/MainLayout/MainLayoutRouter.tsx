@@ -5,10 +5,5 @@ interface Props {
 }
 
 export const MainLayoutRouter: React.FC<Props> = ({ children }) => {
-  return (
-    <div>
-      This is the main layout router
-      <div>{children}</div>
-    </div>
-  );
+  return <div>{children}</div>;
 };
