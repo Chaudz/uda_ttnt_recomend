@@ -16,9 +16,9 @@ const Footer = () => {
           {/* Logo and Contact Info */}
           <div>
             <img
-              src="/path-to-fahasa-logo.png"
+              src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730048972/logo_hhydvi.png"
               alt="Fahasa.com"
-              className="mb-4"
+              className="mb-4 w-20"
             />
             <p className="text-sm mb-2">
               Lầu 5, 387-389 Hai Bà Trưng Quận 3 TP HCM
@@ -44,12 +44,12 @@ const Footer = () => {
             </div>
             <div className="flex space-x-4">
               <img
-                src="/path-to-google-play.png"
+                src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730048208/chplay_hiolkx.png"
                 alt="Google Play"
                 className="h-8"
               />
               <img
-                src="/path-to-app-store.png"
+                src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730048366/appstoree_prhbek.png"
                 alt="App Store"
                 className="h-8"
               />
@@ -106,30 +106,42 @@ const Footer = () => {
         {/* Delivery Partners */}
         <div className="mt-8 flex flex-wrap items-center justify-between">
           <img
-            src="/path-to-snappy.png"
+            src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730691600/002-Logo-PNG-FILE-NganHang-Agribank_itmtdu.jpg"
             alt="Snappy"
             className="h-8 mb-4 mr-4"
           />
-          <img src="/path-to-lex.png" alt="LEX" className="h-8 mb-4 mr-4" />
           <img
-            src="/path-to-ninjavan.png"
+            src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730048366/appstoree_prhbek.png"
+            alt="LEX"
+            className="h-8 mb-4 mr-4"
+          />
+          <img
+            src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730048493/Ninja_Van_na6whz.webp"
             alt="Ninja Van"
             className="h-8 mb-4 mr-4"
           />
           <img
-            src="/path-to-ahamove.png"
+            src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730048493/Ahamove_jcogry.png"
             alt="Ahamove"
             className="h-8 mb-4 mr-4"
           />
           <img
-            src="/path-to-vn-post.png"
+            src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730048492/Logo-VietNam-Post_oouu8p.webp"
             alt="VN Post"
             className="h-8 mb-4 mr-4"
           />
-          <img src="/path-to-vnpay.png" alt="VNPay" className="h-8 mb-4 mr-4" />
-          <img src="/path-to-momo.png" alt="MoMo" className="h-8 mb-4 mr-4" />
           <img
-            src="/path-to-shopeepay.png"
+            src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730048492/ShopeePay_ixc0qq.webp"
+            alt="VNPay"
+            className="h-8 mb-4 mr-4"
+          />
+          <img
+            src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730691600/025-Logo-PNG-FILE-NganHang-TP-Bank_f6jd81.jpg"
+            alt="MoMo"
+            className="h-8 mb-4 mr-4"
+          />
+          <img
+            src="https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730691600/logo-vietcombank_je0a04.png"
             alt="ShopeePay"
             className="h-8 mb-4"
           />

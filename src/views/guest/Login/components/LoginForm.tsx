@@ -39,7 +39,7 @@ export const LoginForm = () => {
 
   return (
     <div
-      className="flex items-center justify-center h-screen"
+      className="flex items-center justify-center h-screen z-50"
       style={{
         background: `url('https://res.cloudinary.com/dmpq7pjrg/image/upload/v1730027809/brg_book2_xal6wk.jpg') no-repeat center center fixed`,
         backgroundSize: 'cover',
